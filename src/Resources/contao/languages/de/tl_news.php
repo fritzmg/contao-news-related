@@ -10,4 +10,5 @@
  */
 
 
+$GLOBALS['TL_LANG']['tl_news']['related_news_legend'] = 'Verwandte News';
 $GLOBALS['TL_LANG']['tl_news']['relatedNews'] = array('Verwandte News', 'Wählen Sie andere Beiträge aus, die mit diesem Beitrag verwandt sind.');
