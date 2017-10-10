@@ -11,3 +11,4 @@
 
 
 $GLOBALS['TL_LANG']['tl_module']['relatedOnly'] = array('Show only related entries','Limits the output to related entries.');
+$GLOBALS['TL_LANG']['tl_module']['disableEmpty'] = array('Disable empty output','Shows all news entries, if no related entries have been found.');

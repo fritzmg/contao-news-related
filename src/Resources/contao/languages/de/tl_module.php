@@ -11,3 +11,4 @@
 
 
 $GLOBALS['TL_LANG']['tl_module']['relatedOnly'] = array('Nur verwandte Einträge anzeigen','Beschränkt die Ausgabe auf verwandte Artikel.');
+$GLOBALS['TL_LANG']['tl_module']['disableEmpty'] = array('Keine leere Ausgabe','Zeigt alle Nachrichtenartikel an, wenn keine verwandten Artikel gefunden wurden.');

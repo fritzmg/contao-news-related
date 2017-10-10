@@ -57,6 +57,9 @@ class NewsRelatedModel extends ParentModel
 			return null;
 		}
 
+		// define the return value for no item
+		$retNoItem = $objModule->disableEmpty ? false : null;
+
 		// get the table and prepare columns, values and options
 		$t = \NewsModel::getTable();
 		$arrColumns = array("$t.pid IN(" . implode(',', array_map('intval', $newsArchives)) . ")");
@@ -69,7 +72,7 @@ class NewsRelatedModel extends ParentModel
 		// check if there is an active tem
 		if (!$item)
 		{
-			return null;
+			return $retNoItem;
 		}
 
 		// get the news
@@ -78,7 +81,7 @@ class NewsRelatedModel extends ParentModel
 		// check if news was found
 		if (!$objNews)
 		{
-			return null;
+			return $retNoItem;
 		}
 
 		// Get the related news
@@ -87,7 +90,7 @@ class NewsRelatedModel extends ParentModel
 		// Check if any related news are defined
 		if (!$arrRelated)
 		{
-			return null;
+			return $retNoItem;
 		}
 
 		// add related news
@@ -151,7 +154,7 @@ class NewsRelatedModel extends ParentModel
 			unset($GLOBALS['NEWS_FILTER_CATEGORIES'], $GLOBALS['NEWS_FILTER_DEFAULT'], $GLOBALS['NEWS_FILTER_PRESERVE']);
 		}
 
-		// Return result
-		return self::findBy($arrColumns, $arrValues, $arrOptions);
+		// get the result
+		return self::findBy($arrColumns, $arrValues, $arrOptions) ?: $retNoItem;
 	}
 }

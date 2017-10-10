@@ -10,7 +10,7 @@
  */
 
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(',skipFirst', ',skipFirst,relatedOnly', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(',skipFirst', ',skipFirst,relatedOnly,disableEmpty', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['relatedOnly'] = array
 (
@@ -18,5 +18,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['relatedOnly'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'                    => array('tl_class'=>'clr w50'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['disableEmpty'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['disableEmpty'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class'=>'w50'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
