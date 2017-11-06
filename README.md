@@ -1,3 +1,7 @@
+[![](https://img.shields.io/maintenance/yes/2017.svg)](https://github.com/fritzmg/contao-news-related)
+[![](https://img.shields.io/packagist/v/fritzmg/contao-news-related.svg)](https://packagist.org/packages/fritzmg/contao-news-related)
+[![](https://img.shields.io/packagist/dt/fritzmg/contao-news-related.svg)](https://packagist.org/packages/fritzmg/contao-news-related)
+
 Contao News Related
 =====================
 
