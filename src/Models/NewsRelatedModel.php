@@ -115,26 +115,33 @@ class NewsRelatedModel extends ParentModel
 		$arrOptions['limit']  = $limit;
 		$arrOptions['offset'] = $offset;
 
+		// fallback to news_sorting (used by news_sorted and news_sorting extension)
+		$objModule->news_order = $objModule->news_order ?: $objModule->news_sorting;
+
 		// support for news_sorted and news_sorting
-		switch ($objModule->news_sorting)
+		switch ($objModule->news_order)
 		{
 			case 'list_date_asc':
 			case 'sort_date_asc':
+			case 'order_date_asc':
 				$arrOptions['order'] = "$t.date ASC";
 				break;
 
 			case 'list_headline_asc':
 			case 'sort_headline_asc':
+			case 'order_headline_asc':
 				$arrOptions['order'] = "$t.headline ASC";
 				break;
 
 			case 'list_headline_desc':
 			case 'sort_headline_desc':
+			case 'order_headline_desc':
 				$arrOptions['order'] = "$t.headline DESC";
 				break;
 
 			case 'list_random':
 			case 'sort_random':
+			case 'order_random':
 				$arrOptions['order'] = "RAND()";
 				break;
 
