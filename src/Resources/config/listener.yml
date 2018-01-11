@@ -1,0 +1,3 @@
+services:
+    contao_newsrelated.listener.news:
+        class: ContaoNewsRelatedBundle\EventListener\NewsListener
