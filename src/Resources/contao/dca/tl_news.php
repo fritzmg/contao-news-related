@@ -17,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_news']['fields']['relatedNews'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_news']['relatedNews'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('ContaoNewsRelatedBundle\EventListener\NewsListener', 'relatedNewsOptionsCallback'),
+	'options_callback'        => array('contao_newsrelated.listener.news', 'relatedNewsOptionsCallback'),
 	'foreignKey'              => 'tl_news.headline',
 	'eval'                    => array('multiple'=>true, 'chosen'=>true, 'tl_style'=>'height:auto', 'tl_class'=>'clr'),
 	'relation'                => array('type'=>'belongsToMany', 'load'=>'lazy'),
