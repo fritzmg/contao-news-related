@@ -46,12 +46,12 @@ class NewsListener
      */
     public function newsOrderOptionsCallback(DataContainer $dc): array
     {
-        if (class_exists(\NewsSorting::class)) {
-            return (new \NewsSorting())->getSortingOptions($dc);
-        }
-
         if ($dc->activeRecord && 'newsmenu' === $dc->activeRecord->type) {
             return ['order_date_asc', 'order_date_desc'];
+        }
+
+        if (class_exists(\NewsSorting::class)) {
+            return array_merge((new \NewsSorting())->getSortingOptions($dc), ['order_related']);
         }
 
         return ['order_date_asc', 'order_date_desc', 'order_headline_asc', 'order_headline_desc', 'order_random', 'order_related'];
