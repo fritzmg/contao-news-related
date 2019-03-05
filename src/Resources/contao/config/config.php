@@ -1,23 +1,18 @@
 <?php
 
-/*
- * This file is part of the ContaoNewsRelated Bundle.
- *
- * (c) Fritz Michael Gschwantner <https://github.com/fritzmg>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
+/*
+ * This file is part of the ContaoNewsRelated bundle.
+ *
+ * (c) fritzmg
+ */
 
 /**
- * Hooks
+ * Hooks.
  */
-if (isset($GLOBALS['TL_HOOKS']['newsListFetchItems']))
-{
-	array_unshift($GLOBALS['TL_HOOKS']['newsListFetchItems'], array('ContaoNewsRelatedBundle\Models\NewsRelatedModel','newsListFetchItems'));
-}
-else
-{
-	$GLOBALS['TL_HOOKS']['newsListFetchItems'] = array(array('ContaoNewsRelatedBundle\Models\NewsRelatedModel','newsListFetchItems'));
+if (isset($GLOBALS['TL_HOOKS']['newsListFetchItems'])) {
+    array_unshift($GLOBALS['TL_HOOKS']['newsListFetchItems'], ['ContaoNewsRelatedBundle\Models\NewsRelatedModel', 'newsListFetchItems']);
+} else {
+    $GLOBALS['TL_HOOKS']['newsListFetchItems'] = [['ContaoNewsRelatedBundle\Models\NewsRelatedModel', 'newsListFetchItems']];
 }

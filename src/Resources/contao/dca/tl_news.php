@@ -1,25 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * This file is part of the ContaoNewsRelated Bundle.
+ * This file is part of the ContaoNewsRelated bundle.
  *
- * (c) Fritz Michael Gschwantner <https://github.com/fritzmg>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * (c) fritzmg
  */
 
+$GLOBALS['TL_DCA']['tl_news']['palettes']['default'] .= ';{related_news_legend:hide},relatedNews';
 
-$GLOBALS['TL_DCA']['tl_news']['palettes']['default'].= ';{related_news_legend:hide},relatedNews';
-
-$GLOBALS['TL_DCA']['tl_news']['fields']['relatedNews'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_news']['relatedNews'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'        => array('contao_newsrelated.listener.news', 'relatedNewsOptionsCallback'),
-	'foreignKey'              => 'tl_news.headline',
-	'eval'                    => array('multiple'=>true, 'chosen'=>true, 'tl_style'=>'height:auto', 'tl_class'=>'clr'),
-	'relation'                => array('type'=>'belongsToMany', 'load'=>'lazy'),
-	'sql'                     => "blob NULL"
-);
+$GLOBALS['TL_DCA']['tl_news']['fields']['relatedNews'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_news']['relatedNews'],
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => ['contao_newsrelated.listener.news', 'relatedNewsOptionsCallback'],
+    'foreignKey' => 'tl_news.headline',
+    'eval' => ['multiple' => true, 'chosen' => true, 'tl_style' => 'height:auto', 'tl_class' => 'clr'],
+    'relation' => ['type' => 'belongsToMany', 'load' => 'lazy'],
+    'sql' => 'blob NULL',
+];

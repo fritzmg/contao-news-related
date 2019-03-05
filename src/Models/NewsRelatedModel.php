@@ -1,167 +1,152 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * This file is part of the ContaoNewsRelated Bundle.
+ * This file is part of the ContaoNewsRelated bundle.
  *
- * (c) Fritz Michael Gschwantner <https://github.com/fritzmg>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * (c) fritzmg
  */
 
 namespace ContaoNewsRelatedBundle\Models;
 
-
-/**
+/*
  * Dynamic parent class
  */
-if (class_exists('\NewsCategories\NewsModel'))
-{
-    class ParentModel extends \NewsCategories\NewsModel {}
+if (class_exists('\NewsCategories\NewsModel')) {
+    class ParentModel extends \NewsCategories\NewsModel
+    {
+    }
+} else {
+    class ParentModel extends \Contao\NewsModel
+    {
+    }
 }
-else
-{
-    class ParentModel extends \Contao\NewsModel {}
-}
-
 
 /**
  * This class essentially only provides a hook, but no additional findBy methods.
- *
- * @author Fritz Michael Gschwantner <fmg@inspiredminds.at>
  */
 class NewsRelatedModel extends ParentModel
 {
-	/**
-	 * newsListFetchItems hook
-	 *
-	 * @param array   $newsArchives
-	 * @param boolean $blnFeatured
-	 * @param integer $limit
-	 * @param integer $offset
-	 * @param \ModuleNewsList $objModule
-	 *
-	 * @return Model\Collection|NewsModel|null|boolean
-	 */
-	public function newsListFetchItems($newsArchives, $blnFeatured, $limit, $offset, $objModule)
-	{
-		// check if filter is active in module
-		if (!$objModule->relatedOnly)
-		{
-			return false;
-		}
+    /**
+     * newsListFetchItems hook.
+     *
+     * @param array           $newsArchives
+     * @param bool            $blnFeatured
+     * @param int             $limit
+     * @param int             $offset
+     * @param \ModuleNewsList $objModule
+     *
+     * @return Model\Collection|NewsModel|boolean|null
+     */
+    public function newsListFetchItems($newsArchives, $blnFeatured, $limit, $offset, $objModule)
+    {
+        // check if filter is active in module
+        if (!$objModule->relatedOnly) {
+            return false;
+        }
 
-		// check if news archives are defined
-		if (!$newsArchives)
-		{
-			return null;
-		}
+        // check if news archives are defined
+        if (!$newsArchives) {
+            return null;
+        }
 
-		// define the return value for no item
-		$retNoItem = $objModule->disableEmpty ? false : null;
+        // define the return value for no item
+        $retNoItem = $objModule->disableEmpty ? false : null;
 
-		// get the table and prepare columns, values and options
-		$t = \NewsModel::getTable();
-		$arrColumns = array("$t.pid IN(" . implode(',', array_map('intval', $newsArchives)) . ")");
-		$arrValues = array();
-		$arrOptions = array();
+        // get the table and prepare columns, values and options
+        $t = \NewsModel::getTable();
+        $arrColumns = ["$t.pid IN(".implode(',', array_map('intval', $newsArchives)).')'];
+        $arrValues = [];
+        $arrOptions = [];
 
-		// get the active item
-		$item = \Config::get('useAutoItem') ? \Input::get('auto_item') : !\Input::get('items');
+        // get the active item
+        $item = \Config::get('useAutoItem') ? \Input::get('auto_item') : !\Input::get('items');
 
-		// check if there is an active tem
-		if (!$item)
-		{
-			return $retNoItem;
-		}
+        // check if there is an active tem
+        if (!$item) {
+            return $retNoItem;
+        }
 
-		// get the news
-		$objNews = \NewsModel::findByAlias($item);
+        // get the news
+        $objNews = \NewsModel::findByAlias($item);
 
-		// check if news was found
-		if (!$objNews)
-		{
-			return $retNoItem;
-		}
+        // check if news was found
+        if (!$objNews) {
+            return $retNoItem;
+        }
 
-		// Get the related news
-		$arrRelated = deserialize($objNews->relatedNews);
+        // Get the related news
+        $arrRelated = deserialize($objNews->relatedNews);
 
-		// Check if any related news are defined
-		if (!$arrRelated)
-		{
-			return $retNoItem;
-		}
+        // Check if any related news are defined
+        if (!$arrRelated) {
+            return $retNoItem;
+        }
 
-		// add related news
-		$arrColumns[] = "$t.id  IN(" . implode(',', array_map('intval', $arrRelated  )) . ")";
+        // add related news
+        $arrColumns[] = "$t.id  IN(".implode(',', array_map('intval', $arrRelated)).')';
 
-		// regular news list stuff
-		if ($blnFeatured === true)
-		{
-			$arrColumns[] = "$t.featured='1'";
-		}
-		elseif ($blnFeatured === false)
-		{
-			$arrColumns[] = "$t.featured=''";
-		}
+        // regular news list stuff
+        if (true === $blnFeatured) {
+            $arrColumns[] = "$t.featured='1'";
+        } elseif (false === $blnFeatured) {
+            $arrColumns[] = "$t.featured=''";
+        }
 
-		if (!BE_USER_LOGGED_IN || TL_MODE == 'BE')
-		{
-			$time = \Date::floorToMinute();
-			$arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
-		}
+        if (!BE_USER_LOGGED_IN || TL_MODE === 'BE') {
+            $time = \Date::floorToMinute();
+            $arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'".($time + 60)."') AND $t.published='1'";
+        }
 
-		$arrOptions['limit']  = $limit;
-		$arrOptions['offset'] = $offset;
+        $arrOptions['limit'] = $limit;
+        $arrOptions['offset'] = $offset;
 
-		// fallback to news_sorting (used by news_sorted and news_sorting extension)
-		$objModule->news_order = $objModule->news_order ?: $objModule->news_sorting;
+        // fallback to news_sorting (used by news_sorted and news_sorting extension)
+        $objModule->news_order = $objModule->news_order ?: $objModule->news_sorting;
 
-		// support for news_sorted and news_sorting
-		switch ($objModule->news_order)
-		{
-			case 'list_date_asc':
-			case 'sort_date_asc':
-			case 'order_date_asc':
-				$arrOptions['order'] = "$t.date ASC";
-				break;
+        // support for news_sorted and news_sorting
+        switch ($objModule->news_order) {
+            case 'list_date_asc':
+            case 'sort_date_asc':
+            case 'order_date_asc':
+                $arrOptions['order'] = "$t.date ASC";
+                break;
 
-			case 'list_headline_asc':
-			case 'sort_headline_asc':
-			case 'order_headline_asc':
-				$arrOptions['order'] = "$t.headline ASC";
-				break;
+            case 'list_headline_asc':
+            case 'sort_headline_asc':
+            case 'order_headline_asc':
+                $arrOptions['order'] = "$t.headline ASC";
+                break;
 
-			case 'list_headline_desc':
-			case 'sort_headline_desc':
-			case 'order_headline_desc':
-				$arrOptions['order'] = "$t.headline DESC";
-				break;
+            case 'list_headline_desc':
+            case 'sort_headline_desc':
+            case 'order_headline_desc':
+                $arrOptions['order'] = "$t.headline DESC";
+                break;
 
-			case 'list_random':
-			case 'sort_random':
-			case 'order_random':
-				$arrOptions['order'] = "RAND()";
-				break;
+            case 'list_random':
+            case 'sort_random':
+            case 'order_random':
+                $arrOptions['order'] = 'RAND()';
+                break;
 
-			default:
-				$arrOptions['order'] = "$t.date DESC";
-		}
+            default:
+                $arrOptions['order'] = "$t.date DESC";
+        }
 
-		// support for news_categories
-		if (class_exists('\NewsCategories\NewsModel'))
-		{
-			$GLOBALS['NEWS_FILTER_CATEGORIES'] = $objModule->news_filterCategories ? true : false;
-			$GLOBALS['NEWS_FILTER_DEFAULT']    = deserialize($objModule->news_filterDefault, true);
-			$GLOBALS['NEWS_FILTER_PRESERVE']   = $objModule->news_filterPreserve;
+        // support for news_categories
+        if (class_exists('\NewsCategories\NewsModel')) {
+            $GLOBALS['NEWS_FILTER_CATEGORIES'] = $objModule->news_filterCategories ? true : false;
+            $GLOBALS['NEWS_FILTER_DEFAULT'] = deserialize($objModule->news_filterDefault, true);
+            $GLOBALS['NEWS_FILTER_PRESERVE'] = $objModule->news_filterPreserve;
 
-			$arrColumns = self::filterByCategories($arrColumns);
+            $arrColumns = self::filterByCategories($arrColumns);
 
-			unset($GLOBALS['NEWS_FILTER_CATEGORIES'], $GLOBALS['NEWS_FILTER_DEFAULT'], $GLOBALS['NEWS_FILTER_PRESERVE']);
-		}
+            unset($GLOBALS['NEWS_FILTER_CATEGORIES'], $GLOBALS['NEWS_FILTER_DEFAULT'], $GLOBALS['NEWS_FILTER_PRESERVE']);
+        }
 
-		// get the result
-		return self::findBy($arrColumns, $arrValues, $arrOptions) ?: $retNoItem;
-	}
+        // get the result
+        return self::findBy($arrColumns, $arrValues, $arrOptions) ?: $retNoItem;
+    }
 }
