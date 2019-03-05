@@ -137,7 +137,7 @@ class NewsRelatedModel extends ParentModel
                 break;
 
             case 'order_related':
-                $arrOptions['order'] = 'FIELD('.implode(',', array_map('intval', $arrRelated)).')';
+                $arrOptions['order'] = "FIELD($t.id,".implode(',', array_map('intval', $arrRelated)).')';
                 break;
 
             default:
