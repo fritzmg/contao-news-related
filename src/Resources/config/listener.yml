@@ -1,3 +1,4 @@
 services:
     contao_newsrelated.listener.news:
+        public: true
         class: ContaoNewsRelatedBundle\EventListener\NewsListener

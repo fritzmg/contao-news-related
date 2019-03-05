@@ -13,6 +13,8 @@ namespace ContaoNewsRelatedBundle\ContaoManager;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
+use Contao\NewsBundle\ContaoNewsBundle;
+use ContaoNewsRelatedBundle\ContaoNewsRelatedBundle;
 
 /**
  * Plugin for the Contao Manager.
@@ -25,8 +27,8 @@ class Plugin implements BundlePluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create('ContaoNewsRelatedBundle\ContaoNewsRelatedBundle')
-                ->setLoadAfter(['Contao\CoreBundle\ContaoCoreBundle']),
+            BundleConfig::create(ContaoNewsRelatedBundle::class)
+                ->setLoadAfter([ContaoNewsBundle::class, 'news_sorting']),
         ];
     }
 }

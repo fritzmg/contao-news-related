@@ -8,8 +8,6 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(',perPage', ',perPage,relatedOnly,disableEmpty', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['relatedOnly'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['relatedOnly'],
     'exclude' => true,
@@ -25,3 +23,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['disableEmpty'] = [
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['includeCurrent'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['includeCurrent'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "char(1) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = ['contao_newsrelated.listener.news', 'newsOrderOptionsCallback'];
+$GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['reference'] = &$GLOBALS['TL_LANG']['tl_module'];
+
+\Contao\CoreBundle\DataContainer\PaletteManipulator::create()
+    ->addField('relatedOnly', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
+    ->addField('includeCurrent', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
+    ->addField('disableEmpty', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('newslist', 'tl_module')
+;

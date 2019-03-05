@@ -37,7 +37,7 @@ class NewsRelatedModel extends ParentModel
      * @param int             $offset
      * @param \ModuleNewsList $objModule
      *
-     * @return Model\Collection|NewsModel|boolean|null
+     * @return Model\Collection|NewsModel|bool|null
      */
     public function newsListFetchItems($newsArchives, $blnFeatured, $limit, $offset, $objModule)
     {
@@ -82,6 +82,11 @@ class NewsRelatedModel extends ParentModel
         // Check if any related news are defined
         if (!$arrRelated) {
             return $retNoItem;
+        }
+
+        // Add current element
+        if ($objModule->includeCurrent) {
+            array_unshift($arrRelated, $objNews->id);
         }
 
         // add related news
@@ -129,6 +134,10 @@ class NewsRelatedModel extends ParentModel
             case 'sort_random':
             case 'order_random':
                 $arrOptions['order'] = 'RAND()';
+                break;
+
+            case 'order_related':
+                $arrOptions['order'] = 'FIELD('.implode(',', array_map('intval', $arrRelated)).')';
                 break;
 
             default:

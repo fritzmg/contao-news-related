@@ -8,7 +8,7 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-/**
+/*
  * Hooks.
  */
 if (isset($GLOBALS['TL_HOOKS']['newsListFetchItems'])) {
