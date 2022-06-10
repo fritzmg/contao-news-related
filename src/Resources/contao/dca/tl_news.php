@@ -8,15 +8,25 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-$GLOBALS['TL_DCA']['tl_news']['palettes']['default'] .= ';{related_news_legend:hide},relatedNews';
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 $GLOBALS['TL_DCA']['tl_news']['fields']['relatedNews'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_news']['relatedNews'],
     'exclude' => true,
-    'inputType' => 'select',
-    'options_callback' => ['contao_newsrelated.listener.news', 'relatedNewsOptionsCallback'],
-    'foreignKey' => 'tl_news.headline',
-    'eval' => ['multiple' => true, 'chosen' => true, 'tl_style' => 'height:auto', 'tl_class' => 'clr'],
-    'relation' => ['type' => 'belongsToMany', 'load' => 'lazy'],
-    'sql' => 'blob NULL',
+    'inputType' => 'picker',
+    'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'tl_class' => 'clr'],
+    'relation' => ['type' => 'belongsToMany', 'load' => 'lazy', 'table' => 'tl_news'],
+    'sql' => ['type' => 'blob', 'length' => 65535, 'notnull' => false],
 ];
+
+$pm = PaletteManipulator::create()
+    ->addLegend('related_news_legend', null, PaletteManipulator::POSITION_AFTER, true)
+    ->addField('relatedNews', 'related_news_legend', PaletteManipulator::POSITION_APPEND)
+;
+
+foreach ($GLOBALS['TL_DCA']['tl_news']['palettes'] as $name => $palette) {
+    if (!\is_string($palette)) {
+        continue;
+    }
+
+    $pm->applyToPalette($name, 'tl_news');
+}
