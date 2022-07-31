@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_news']['fields']['relatedNews'] = [
 ];
 
 $pm = PaletteManipulator::create()
-    ->addLegend('related_news_legend', null, PaletteManipulator::POSITION_AFTER, true)
+    ->addLegend('related_news_legend', 'foobar', PaletteManipulator::POSITION_AFTER, true)
     ->addField('relatedNews', 'related_news_legend', PaletteManipulator::POSITION_APPEND)
 ;
 

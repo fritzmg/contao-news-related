@@ -10,6 +10,13 @@ declare(strict_types=1);
 
 namespace ContaoNewsRelatedBundle\Models;
 
+use Contao\Config;
+use Contao\Date;
+use Contao\Input;
+use Contao\NewsModel;
+use Contao\StringUtil;
+use Contao\System;
+
 /*
  * Dynamic parent class
  */
@@ -55,13 +62,13 @@ class NewsRelatedModel extends ParentModel
         $retNoItem = $objModule->disableEmpty ? false : null;
 
         // get the table and prepare columns, values and options
-        $t = \NewsModel::getTable();
+        $t = self::getTable();
         $arrColumns = ["$t.pid IN(".implode(',', array_map('intval', $newsArchives)).')'];
         $arrValues = [];
         $arrOptions = [];
 
         // get the active item
-        $item = \Config::get('useAutoItem') ? \Input::get('auto_item') : !\Input::get('items');
+        $item = Config::get('useAutoItem') ? Input::get('auto_item') : !Input::get('items');
 
         // check if there is an active tem
         if (!$item) {
@@ -69,7 +76,7 @@ class NewsRelatedModel extends ParentModel
         }
 
         // get the news
-        $objNews = \NewsModel::findByAlias($item);
+        $objNews = self::findByAlias($item);
 
         // check if news was found
         if (!$objNews) {
@@ -77,7 +84,7 @@ class NewsRelatedModel extends ParentModel
         }
 
         // Get the related news
-        $arrRelated = deserialize($objNews->relatedNews);
+        $arrRelated = StringUtil::deserialize($objNews->relatedNews);
 
         // Check if any related news are defined
         if (!$arrRelated) {
@@ -99,8 +106,8 @@ class NewsRelatedModel extends ParentModel
             $arrColumns[] = "$t.featured=''";
         }
 
-        if (!BE_USER_LOGGED_IN || TL_MODE === 'BE') {
-            $time = \Date::floorToMinute();
+        if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
+            $time = Date::floorToMinute();
             $arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'".($time + 60)."') AND $t.published='1'";
         }
 
@@ -147,7 +154,7 @@ class NewsRelatedModel extends ParentModel
         // support for news_categories
         if (class_exists('\NewsCategories\NewsModel')) {
             $GLOBALS['NEWS_FILTER_CATEGORIES'] = $objModule->news_filterCategories ? true : false;
-            $GLOBALS['NEWS_FILTER_DEFAULT'] = deserialize($objModule->news_filterDefault, true);
+            $GLOBALS['NEWS_FILTER_DEFAULT'] = StringUtil::deserialize($objModule->news_filterDefault, true);
             $GLOBALS['NEWS_FILTER_PRESERVE'] = $objModule->news_filterPreserve;
 
             $arrColumns = self::filterByCategories($arrColumns);
