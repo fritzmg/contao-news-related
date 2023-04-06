@@ -8,13 +8,13 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-namespace ContaoNewsRelatedBundle\ContaoManager;
+namespace InspiredMinds\ContaoNewsRelated\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\NewsBundle\ContaoNewsBundle;
-use ContaoNewsRelatedBundle\ContaoNewsRelatedBundle;
+use InspiredMinds\ContaoNewsRelated\ContaoNewsRelatedBundle;
 
 /**
  * Plugin for the Contao Manager.

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-namespace ContaoNewsRelatedBundle\DependencyInjection;
+namespace InspiredMinds\ContaoNewsRelated\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

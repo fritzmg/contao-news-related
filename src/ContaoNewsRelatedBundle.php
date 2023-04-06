@@ -8,13 +8,14 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-namespace ContaoNewsRelatedBundle;
+namespace InspiredMinds\ContaoNewsRelated;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Configures the ContaoNewsRelated Bundle.
- */
 class ContaoNewsRelatedBundle extends Bundle
 {
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
 }

@@ -26,18 +26,21 @@
 		}
 	],
 	"require":{
-		"php": ">=7.1",
-		"contao/core-bundle": "^4.9 || ^5.0"
+		"php": ">=7.4",
+		"contao/core-bundle": "^4.9 || ^5.0",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"inspiredminds/contao-news-filter-event": "^1.0"
 	},
 	"require-dev": {
-		 "contao/manager-plugin": "^2.0"
+		 "contao/manager-plugin": "^2.0",
+		 "rector/rector": "^0.14.5"
 	},
 	"autoload": {
 		"psr-4": {
-			"ContaoNewsRelatedBundle\\": "src/"
+			"InspiredMinds\\ContaoNewsRelated\\": "src/"
 		}
 	},
 	"extra": {
-		"contao-manager-plugin": "ContaoNewsRelatedBundle\\ContaoManager\\Plugin"
+		"contao-manager-plugin": "InspiredMinds\\ContaoNewsRelated\\Plugin"
 	}
 }

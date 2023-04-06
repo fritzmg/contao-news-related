@@ -8,7 +8,7 @@ declare(strict_types=1);
  * (c) fritzmg
  */
 
-namespace ContaoNewsRelatedBundle\Models;
+namespace InspiredMinds\ContaoNewsRelated\Models;
 
 use Contao\Config;
 use Contao\Date;
