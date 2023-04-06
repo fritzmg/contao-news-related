@@ -29,7 +29,7 @@
 		"php": ">=7.4",
 		"contao/core-bundle": "^4.9 || ^5.0",
 		"friendsofphp/php-cs-fixer": "^3.0",
-		"inspiredminds/contao-news-filter-event": "^1.0"
+		"inspiredminds/contao-news-filter-event": "^1.1"
 	},
 	"require-dev": {
 		 "contao/manager-plugin": "^2.0",
@@ -42,5 +42,12 @@
 	},
 	"extra": {
 		"contao-manager-plugin": "InspiredMinds\\ContaoNewsRelated\\ContaoManager\\Plugin"
+	},
+	"config": {
+		"allow-plugins": {
+			"contao-components/installer": true,
+			"php-http/discovery": false,
+			"contao/manager-plugin": true
+		}
 	}
 }
