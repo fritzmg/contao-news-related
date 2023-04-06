@@ -41,6 +41,6 @@
 		}
 	},
 	"extra": {
-		"contao-manager-plugin": "InspiredMinds\\ContaoNewsRelated\\Plugin"
+		"contao-manager-plugin": "InspiredMinds\\ContaoNewsRelated\\ContaoManager\\Plugin"
 	}
 }
