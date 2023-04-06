@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+
 /*
  * This file is part of the ContaoNewsRelated bundle.
  *
@@ -32,12 +34,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['includeCurrent'] = [
     'sql' => "char(1) NOT NULL default ''",
 ];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = ['contao_newsrelated.listener.news', 'newsOrderOptionsCallback'];
 $GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['reference'] = &$GLOBALS['TL_LANG']['tl_module'];
 
-\Contao\CoreBundle\DataContainer\PaletteManipulator::create()
-    ->addField('relatedOnly', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
-    ->addField('includeCurrent', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
-    ->addField('disableEmpty', 'config_legend', \Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
+PaletteManipulator::create()
+    ->addLegend('news_related_legend', 'config_legend', PaletteManipulator::POSITION_AFTER, true)
+    ->addField('relatedOnly', 'news_related_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('includeCurrent', 'news_related_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('disableEmpty', 'news_related_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('newslist', 'tl_module')
 ;

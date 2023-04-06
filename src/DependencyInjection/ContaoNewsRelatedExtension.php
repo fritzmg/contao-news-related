@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the ContaoNewsRelated bundle.
+ * This file is part of the Contao News Related extension.
  *
- * (c) fritzmg
+ * (c) inspiredminds
+ *
+ * @license LGPL-3.0-or-later
  */
 
-namespace ContaoNewsRelatedBundle\DependencyInjection;
+namespace InspiredMinds\ContaoNewsRelated\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,7 +24,7 @@ class ContaoNewsRelatedExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('listener.yml');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader->load('services.yaml');
     }
 }
