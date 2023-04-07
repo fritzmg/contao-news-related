@@ -28,11 +28,11 @@
 	"require":{
 		"php": ">=7.4",
 		"contao/core-bundle": "^4.9 || ^5.0",
-		"friendsofphp/php-cs-fixer": "^3.0",
 		"inspiredminds/contao-news-filter-event": "^1.1"
 	},
 	"require-dev": {
 		 "contao/manager-plugin": "^2.0",
+		 "friendsofphp/php-cs-fixer": "^3.0",
 		 "rector/rector": "^0.14.5"
 	},
 	"autoload": {
