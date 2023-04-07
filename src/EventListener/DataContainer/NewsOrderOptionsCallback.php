@@ -23,7 +23,7 @@ class NewsOrderOptionsCallback
 {
     public function __invoke(DataContainer $dc): void
     {
-        $callback = $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] ?? static fn(): array => [];
+        $callback = $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] ?? static fn (): array => [];
 
         $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] = static function () use ($callback, $dc): array {
             $defaultOptions = [];
