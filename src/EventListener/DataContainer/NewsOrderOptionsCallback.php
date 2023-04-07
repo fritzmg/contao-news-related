@@ -23,15 +23,15 @@ class NewsOrderOptionsCallback
 {
     public function __invoke(DataContainer $dc): void
     {
-        $callback = $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] ?? static fn (): array => [];
+        $callback = $GLOBALS['TL_DCA'][$dc->table]['fields']['news_order']['options_callback'] ?? static fn (): array => [];
 
-        $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] = static function () use ($callback, $dc): array {
+        $GLOBALS['TL_DCA'][$dc->table]['fields']['news_order']['options_callback'] = static function () use ($callback, $dc): array {
             $defaultOptions = [];
 
             if (\is_callable($callback)) {
                 $defaultOptions = $callback($dc);
             } elseif (\is_array($callback)) {
-                $defaultOptions = System::importStatic($callback[0])->{$callback[1]};
+                $defaultOptions = System::importStatic($callback[0])->{$callback[1]}($dc);
             }
 
             if ($dc->activeRecord && 'newsmenu' === $dc->activeRecord->type) {

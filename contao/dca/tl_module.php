@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Contao News Related extension.
+ *
+ * (c) inspiredminds
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 /*
@@ -33,8 +41,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['includeCurrent'] = [
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['reference'] = &$GLOBALS['TL_LANG']['tl_module'];
 
 PaletteManipulator::create()
     ->addLegend('news_related_legend', 'config_legend', PaletteManipulator::POSITION_AFTER, true)
