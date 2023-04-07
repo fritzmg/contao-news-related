@@ -6,8 +6,5 @@ services:
     InspiredMinds\ContaoNewsRelated\:
         resource: ../src
 
-    InspiredMinds\ContaoNewsRelated\EventListener\DataContainer\NewsOrderOptionsCallback:
-        arguments: ['@?InspiredMinds\ContaoNewsSorting\EventListener\ModuleDataContainerListener']
-
     InspiredMinds\ContaoNewsRelated\EventListener\NewsFilterEventListener:
         tags: ['kernel.event_listener']

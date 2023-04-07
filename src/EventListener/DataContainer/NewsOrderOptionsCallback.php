@@ -14,32 +14,32 @@ namespace InspiredMinds\ContaoNewsRelated\EventListener\DataContainer;
 
 use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
+use Contao\System;
 use InspiredMinds\ContaoNewsSorting\EventListener\ModuleDataContainerListener;
 
 /**
- * @Callback(table="tl_module", target="fields.news_order.options", priority=100)
+ * @Callback(table="tl_module", target="config.onload")
  */
 class NewsOrderOptionsCallback
 {
-    private $newsSortingOptionsListener;
-
-    public function __construct(ModuleDataContainerListener $newsSortingOptionsListener = null)
-    {
-        $this->newsSortingOptionsListener = $newsSortingOptionsListener;
-    }
-
     public function __invoke(DataContainer $dc): array
     {
-        $defaultOptions = (new \tl_module_news())->getSortingOptions($dc);
+        $callback = $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] ?? static function(): array { return []; };
 
-        if ($dc->activeRecord && 'newsmenu' === $dc->activeRecord->type) {
-            return $defaultOptions;
-        }
+        $GLOBALS['TL_DCA'][$dc->table]['news_order']['options_callback'] = static function() use ($callback, $dc): array {
+            $defaultOptions = [];
 
-        if (null !== $this->newsSortingOptionsListener) {
-            return array_merge($this->newsSortingOptionsListener->getSortingOptions($dc), ['order_related']);
-        }
+            if (\is_callable($callback)) {
+                $defaultOptions = $callback($dc);
+            } elseif (\is_array($callback)) {
+                $defaultOptions = System::importStatic($callback[0])->{$callback[1]};
+            }
 
-        return array_merge($defaultOptions, ['order_related']);
+            if ($dc->activeRecord && 'newsmenu' === $dc->activeRecord->type) {
+                return $defaultOptions;
+            }
+
+            return array_merge($defaultOptions, ['order_related']);
+        };
     }
 }
